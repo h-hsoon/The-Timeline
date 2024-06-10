@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
-    <title>Posts</title>
+    <title>Message Board</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Timeline</h1>
+    <h1>Timeline</h1>
+    <form action="/post" method="POST">
+        <input type="text" name="name" placeholder="Your name" required>
+        <textarea name="message" placeholder="Post a message" required></textarea>
+        <button type="submit">Post a message</button>
+    </form>
+    <div>
         <% posts.forEach(post => { %>
-            <div class="post">
-                <div class="post-header">
-                    <strong><%= post.user %></strong> - <%= new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-                </div>
-                <div class="post-body">
-                    <p><%= post.message %></p>
-                </div>
+            <div>
+                <h3><%= post.name %> - <%= post.date.toDateString() %></h3>
+                <p><%= post.message %></p>
             </div>
         <% }) %>
     </div>

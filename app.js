@@ -1,23 +1,41 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const path = require('path');
+
 const app = express();
-const port = 3000;
 
-const posts = [
-    { user: 'Michael Choi', date: '2024-01-17', message: 'This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message.' },
-    { user: 'Michael Choi', date: '2024-02-27', message: 'This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message.' },
-    { user: 'Cory Whiteland', date: '2024-03-17', message: 'This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message.' },
-    { user: 'Cory Whiteland', date: '2024-04-22', message: 'This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message.' },
-];
-posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+// Connect to MongoDB
+mongoose.connect('mongodb+srv://hanna:hanna@cluster0.s2hpooe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.render('index', { posts });
+// Define the Post schema and model
+const postSchema = new mongoose.Schema({
+    name: String,
+    date: { type: Date, default: Date.now },
+    message: String
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const Post = mongoose.model('Post', postSchema);
+
+// Routes
+app.get('/', async (req, res) => {
+    const posts = await Post.find().sort({ date: -1 });
+    res.render('index', { posts: posts });
+});
+
+app.post('/post', async (req, res) => {
+    const { name, message } = req.body;
+    const post = new Post({ name, message });
+    await post.save();
+    res.redirect('/');
+});
+
+// Start the server
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
