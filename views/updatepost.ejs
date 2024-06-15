@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/style.css">
+    <title>Update Post</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Home Page</h1>
+        <div class="add-post-form">
+            <form action="/updated-post/<%= post.id %>" method="post">
+                <input value="<%= post.title %>" name="title" type="text"  placeholder="post title">
+                <textarea  name="content" placeholder="post content"> <%= post.content %></textarea>
+                <button>Save</button>
+            </form>
+            <a href="/"><button class="update">back</button></a>
+        </div>
+    
+</body>
+</html>

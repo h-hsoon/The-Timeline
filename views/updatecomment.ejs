@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update comment</title>
+</head>
+<body>
+    <form action="/updated-comment/<%= post._id %>/<%= comment.id %>" method="post">
+        <input value="<%= comment.commentBody  %>" name="comment" type="text" placeholder="add a comment" style="width: 50%; height: 20px; display: block; margin-bottom: 5px;">
+        <button>Save comment</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/style.css">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Home Page</h1>
+        <div class="add-post-form">
+            <form action="/add-new-post" method="post">
+                <input name="title" type="text"  placeholder="post title">
+                <textarea name="content" placeholder="post content"></textarea>
+                <button>Add a post</button>
+            </form>
+        </div>
+        <div class="posts">
+            <% for( let i = 0; i < posts.length; i++ ) { %>
+                <div class="post">
+                    <h2><%= posts[i].title %></h2>
+                    <p class="content"><%= posts[i].content %></p>
+                    <a href="/update-post/<%= posts[i].id %>"><button class="update">Update post</button></a>
+                    <a href="/delete-post/<%= posts[i].id %>"><button class="delete">Delete post</button></a>
+
+                    <p class="date"><%= posts[i].date.toDateString() %></p>
+
+                    <div class="comments">
+                        <h3>comments</h3>
+                        <% for( let j = 0; j < posts[i].comments.length; j++ ) { %>
+                            <div class="comment">
+                                <p class="content"><%= posts[i].comments[j].commentBody %></p>
+                                <a href="/update-comment/<%= posts[i].id %>/<%= posts[i].comments[j].id %>"><button class="update">Update commant</button></a>
+                                <a href="/delete-comment/<%= posts[i].id %>/<%= posts[i].comments[j].id %>"><button class="delete">Delete commant</button></a>
+                                <p class="date"> <%= posts[i].comments[j].created_at.toDateString() %></p>
+
+                            </div>
+                        <% } %>
+                        <form action="/add-comment/<%= posts[i]._id %>" method="post">
+                            <input name="comment" type="text" placeholder="add a comment" style="width: 50%; height: 20px; display: block; margin-bottom: 5px;">
+                            <button>Add a comment</button>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
